@@ -26,11 +26,10 @@ As the title says, it is an over-engineered calculator, which means: You should 
 4. Historik over udregninger, skal det være in-memory eller persistent?
     1. Til at starte med, gemmes udregningerne in-memory.
 5. Pattern til separation of logic?
-    1. Opdeler udregning, api, og historik logik i hver deres services med ét klart ansvar, nemmere at teste separat logik.
-    2. Minimal API der orkestrerer I/O.
-    3. Calculation-service står for udregning.
-    4. History-service gemmer operationerne, kan ændres uafhængigt af Calculation.
+    1. Opdeler udregning +api, og historik logik i hver deres services med ét klart ansvar, nemmere at teste separat logik.
+    2. Calculation minimal API, der udregner operationerne.
+    4. History-service gemmer operationerne, kan ændres uafhængigt af Calculation. Worker service henter udregningerne og gemmer dem i historik.
     5. Monorepo da det er et mindre POC-projekt.
-    6. Clean Architecture pattern
+    6. Event Driven, Message Queue, RabbitMQ.
 6. Muligheder for at skalere projektet?
     1. Skal kunne skaleres uafhængigt og horisontalt.

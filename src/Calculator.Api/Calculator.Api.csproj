@@ -12,10 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Calculation.Service\Calculation.Service.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Folder Include="Dtos\" />
       <Folder Include="Endpoints\" />
     </ItemGroup>
