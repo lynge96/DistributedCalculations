@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <RootNamespace>Calculator.Infrastructure.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Calculator.Infrastructure\Calculator.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\Calculator.MathEvaluation\Calculator.MathEvaluation.csproj" />
     </ItemGroup>
 
 </Project>

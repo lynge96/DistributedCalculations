@@ -1,8 +1,8 @@
 ﻿using Calculator.Application.Services;
+using Calculator.Domain.Models;
 using Calculator.Infrastructure;
 using MathEvaluation;
 using Microsoft.Extensions.Logging.Abstractions;
-using MathExpression = Calculator.Domain.Models.MathExpression;
 
 namespace Calculator.Application.Tests;
 
@@ -13,12 +13,12 @@ public class CalculateExpressionServiceTests
     public CalculateExpressionServiceTests()
     {
         var calculatorLogger =
-            NullLogger<MathEvaluatorCalculator>.Instance;
+            NullLogger<MathEvaluationCalculator>.Instance;
 
         var serviceLogger =
             NullLogger<CalculateExpressionService>.Instance;
 
-        var calculator = new MathEvaluatorCalculator(calculatorLogger);
+        var calculator = new MathEvaluationCalculator(calculatorLogger);
 
         _service = new CalculateExpressionService(
             calculator,
@@ -28,7 +28,7 @@ public class CalculateExpressionServiceTests
     [Fact]
     public void Calculates_expression_correctly()
     {
-        var expression = new MathExpression("2 + 3 * 5");
+        var expression = new Expression("2 + 3 * 5");
 
         var result = _service.Execute(expression);
 
@@ -38,7 +38,7 @@ public class CalculateExpressionServiceTests
     [Fact]
     public void Invalid_expression_syntax_throws()
     {
-        var expression = new MathExpression("2 + 3 *");
+        var expression = new Expression("2 + 3 *");
 
         Assert.Throws<MathExpressionException>(() =>
             _service.Execute(expression));

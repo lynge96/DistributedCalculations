@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using Calculator.Domain.Exceptions;
 using MathEvaluation;
 
 namespace Calculator.Api.Middleware;
@@ -52,6 +53,15 @@ public class ExceptionHandlingMiddleware
                 errorContext = new ErrorContext(mathEx.GetType().Name, (int)HttpStatusCode.BadRequest, path.Value, traceId, mathEx.Message);
                 
                 _logger.LogWarning(mathEx, "Invalid expression: {ErrorMessage}", errorContext.ErrorMessage);
+                
+                context.Response.StatusCode = errorContext.StatusCode;
+                break;
+            }
+            case CalculationOverflowException calcEx:
+            {
+                errorContext = new ErrorContext(calcEx.GetType().Name, (int)HttpStatusCode.UnprocessableEntity, path.Value, traceId, calcEx.Message);
+                
+                _logger.LogError(calcEx, "Calculation result exceeds supported numeric range: {ErrorMessage}", errorContext.ErrorMessage);
                 
                 context.Response.StatusCode = errorContext.StatusCode;
                 break;

@@ -18,13 +18,13 @@ public sealed class CalculateExpressionService
         _logger = logger;
     }
 
-    public CalculationResult Execute(MathExpression mathExpression)
+    public CalculationResult Execute(Expression expression)
     {
         _logger.LogInformation(
             "Executing calculation for expression: {Expression}", 
-            mathExpression.Value);
+            expression.Value);
         
-        var result = _calculator.Calculate(mathExpression);
+        var result = _calculator.Calculate(expression);
         
         var calculationResult = new CalculationResult(result);
         

@@ -8,7 +8,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddCalculator(this IServiceCollection services)
     {
-        services.AddScoped<ICalculator, MathEvaluatorCalculator>();
+        services.AddScoped<ICalculator, MathEvaluationCalculator>();
         services.AddScoped<CalculateExpressionService>();
 
         return services;

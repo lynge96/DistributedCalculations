@@ -4,5 +4,5 @@ namespace Calculator.Domain.Interfaces;
 
 public interface ICalculator
 {
-    decimal Calculate(MathExpression mathExpression);
+    decimal Calculate(Expression expression);
 }

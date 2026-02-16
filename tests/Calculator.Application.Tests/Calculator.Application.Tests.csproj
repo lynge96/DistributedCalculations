@@ -21,7 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Calculator.Application\Calculator.Application.csproj" />
-      <ProjectReference Include="..\..\src\Calculator.Infrastructure\Calculator.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\Calculator.MathEvaluation\Calculator.MathEvaluation.csproj" />
     </ItemGroup>
 
 </Project>
