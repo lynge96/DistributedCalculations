@@ -12,8 +12,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Dtos\" />
-      <Folder Include="Endpoints\" />
+      <ProjectReference Include="..\Calculator.Application\Calculator.Application.csproj" />
+      <ProjectReference Include="..\Calculator.Infrastructure\Calculator.Infrastructure.csproj" />
     </ItemGroup>
+    
 
 </Project>
