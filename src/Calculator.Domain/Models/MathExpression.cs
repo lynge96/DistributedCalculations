@@ -1,6 +1,6 @@
 ﻿namespace Calculator.Domain.Models;
 
-public sealed record MathExpression
+public sealed class MathExpression
 {
     public string Value { get; }
 

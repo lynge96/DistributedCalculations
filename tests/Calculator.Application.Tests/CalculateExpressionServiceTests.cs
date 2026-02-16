@@ -1,6 +1,7 @@
 ﻿using Calculator.Application.Services;
 using Calculator.Infrastructure;
 using MathEvaluation;
+using Microsoft.Extensions.Logging.Abstractions;
 using MathExpression = Calculator.Domain.Models.MathExpression;
 
 namespace Calculator.Application.Tests;
@@ -11,8 +12,17 @@ public class CalculateExpressionServiceTests
 
     public CalculateExpressionServiceTests()
     {
-        var calculator = new MathEvaluatorCalculator();
-        _service = new CalculateExpressionService(calculator);
+        var calculatorLogger =
+            NullLogger<MathEvaluatorCalculator>.Instance;
+
+        var serviceLogger =
+            NullLogger<CalculateExpressionService>.Instance;
+
+        var calculator = new MathEvaluatorCalculator(calculatorLogger);
+
+        _service = new CalculateExpressionService(
+            calculator,
+            serviceLogger);
     }
     
     [Fact]

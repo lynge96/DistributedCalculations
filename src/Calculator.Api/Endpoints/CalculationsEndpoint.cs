@@ -14,6 +14,7 @@ public static class CalculationsEndpoint
             var result = calculationService.Execute(expression);
 
             var responseDto = new CalculationResponseDto(result.CalculationId, result.Result, request.MathExpression, result.Timestamp);
+            
             return Results.Ok(responseDto);
         });
     }
