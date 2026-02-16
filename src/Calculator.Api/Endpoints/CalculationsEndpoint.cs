@@ -10,10 +10,11 @@ public static class CalculationsEndpoint
     {
         app.MapPost("/calculations", (CalculateRequestDto request, CalculateExpressionService calculationService) =>
         {
-            var expression = new MathExpression(request.Expression);
+            var expression = new MathExpression(request.MathExpression);
             var result = calculationService.Execute(expression);
 
-            return Results.Ok(new CalculationResponseDto(Guid.NewGuid(), result.Result));
+            var responseDto = new CalculationResponseDto(result.CalculationId, result.Result, request.MathExpression, result.Timestamp);
+            return Results.Ok(responseDto);
         });
     }
 }

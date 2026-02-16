@@ -7,7 +7,7 @@ public sealed record MathExpression
     public MathExpression(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException("Expression cannot be empty");
+            throw new ArgumentException($"{nameof(MathExpression)} cannot be empty or null, please provide a valid expression");
 
         Value = value;
     }

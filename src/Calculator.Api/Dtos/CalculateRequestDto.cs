@@ -1,3 +1,3 @@
 ﻿namespace Calculator.Api.Dtos;
 
-public sealed record CalculateRequestDto(string Expression);
+public sealed record CalculateRequestDto(string MathExpression);
