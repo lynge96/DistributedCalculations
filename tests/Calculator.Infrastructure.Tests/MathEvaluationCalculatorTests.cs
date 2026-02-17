@@ -1,5 +1,7 @@
 ﻿using Calculator.Domain.Exceptions;
 using Calculator.Domain.Models;
+using Calculator.Infrastructure.MathEvaluation;
+using MathEvaluation;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Calculator.Infrastructure.Tests;
@@ -29,6 +31,15 @@ public class MathEvaluationCalculatorTests
         var expression = new Expression("999999999999999999999 * 999999999999999999");
 
         Assert.Throws<CalculationOverflowException>(() =>
+            _calculator.Calculate(expression));
+    }
+    
+    [Fact]
+    public void Invalid_expression_syntax_throws()
+    {
+        var expression = new Expression("2 + 3 *");
+
+        Assert.Throws<MathExpressionException>(() =>
             _calculator.Calculate(expression));
     }
 }

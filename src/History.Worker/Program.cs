@@ -1,7 +1,7 @@
 using History.Worker;
 
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<HistoryConsumer>();
 
 var host = builder.Build();
 host.Run();

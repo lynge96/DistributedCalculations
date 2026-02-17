@@ -12,13 +12,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Domain", "src\Ca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Application", "src\Calculator.Application\Calculator.Application.csproj", "{3FD69DB9-8F87-403F-909A-92AE18958C06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.MathEvaluation", "src\Calculator.MathEvaluation\Calculator.MathEvaluation.csproj", "{0E2EF4B2-097E-4D49-9857-BD5C56F63E27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Infrastructure", "src\Calculator.Infrastructure\Calculator.Infrastructure.csproj", "{0E2EF4B2-097E-4D49-9857-BD5C56F63E27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Domain.Tests", "tests\Calculator.Domain.Tests\Calculator.Domain.Tests.csproj", "{CE508E4C-B7FF-4237-A948-46273FDE9CFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Application.Tests", "tests\Calculator.Application.Tests\Calculator.Application.Tests.csproj", "{C21CA017-39EB-4A55-BBD3-DF9A3E018350}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.MathEvaluation.Tests", "tests\Calculator.MathEvaluation.Tests\Calculator.MathEvaluation.Tests.csproj", "{68C896CE-EF97-4A43-A295-51B0012BBCE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Infrastructure.Tests", "tests\Calculator.Infrastructure.Tests\Calculator.Infrastructure.Tests.csproj", "{68C896CE-EF97-4A43-A295-51B0012BBCE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

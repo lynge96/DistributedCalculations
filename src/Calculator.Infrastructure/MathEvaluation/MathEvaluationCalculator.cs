@@ -5,7 +5,7 @@ using MathEvaluation;
 using MathEvaluation.Context;
 using Microsoft.Extensions.Logging;
 
-namespace Calculator.Infrastructure;
+namespace Calculator.Infrastructure.MathEvaluation;
 
 public sealed class MathEvaluationCalculator : ICalculator
 {
@@ -44,7 +44,6 @@ public sealed class MathEvaluationCalculator : ICalculator
 
     private static bool IsOverflow(MathExpressionException ex)
     {
-        return ex.Message.Contains("overflow", StringComparison.OrdinalIgnoreCase)
-               || ex.InnerException is OverflowException;
+        return ex.Message.Contains("overflow", StringComparison.OrdinalIgnoreCase) || ex.InnerException is OverflowException;
     }
 }

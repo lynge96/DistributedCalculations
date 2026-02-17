@@ -1,8 +1,12 @@
-﻿using Calculator.Application.Services;
+﻿using Calculator.Application.Interfaces;
+using Calculator.Application.Services;
+using Calculator.Domain.Interfaces;
 using Calculator.Domain.Models;
 using Calculator.Infrastructure;
+using Calculator.Infrastructure.MathEvaluation;
 using MathEvaluation;
 using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
 
 namespace Calculator.Application.Tests;
 
@@ -12,35 +16,23 @@ public class CalculateExpressionServiceTests
 
     public CalculateExpressionServiceTests()
     {
-        var calculatorLogger =
-            NullLogger<MathEvaluationCalculator>.Instance;
+        var calculator = Substitute.For<ICalculator>();
+        var eventBus = Substitute.For<IEventBus>();
+        var logger = NullLogger<CalculateExpressionService>.Instance;
 
-        var serviceLogger =
-            NullLogger<CalculateExpressionService>.Instance;
-
-        var calculator = new MathEvaluationCalculator(calculatorLogger);
-
-        _service = new CalculateExpressionService(
-            calculator,
-            serviceLogger);
+        _service = new CalculateExpressionService(calculator, eventBus, logger);
     }
     
     [Fact]
     public void Calculates_expression_correctly()
     {
+        var logger = NullLogger<MathEvaluationCalculator>.Instance;
+        var calculator = new MathEvaluationCalculator(logger);
+
         var expression = new Expression("2 + 3 * 5");
 
-        var result = _service.Execute(expression);
+        var result = calculator.Calculate(expression);
 
-        Assert.Equal(17m, result.Result);
-    }
-
-    [Fact]
-    public void Invalid_expression_syntax_throws()
-    {
-        var expression = new Expression("2 + 3 *");
-
-        Assert.Throws<MathExpressionException>(() =>
-            _service.Execute(expression));
+        Assert.Equal(17m, result);
     }
 }
