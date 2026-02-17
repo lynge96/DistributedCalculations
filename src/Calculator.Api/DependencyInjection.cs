@@ -1,7 +1,6 @@
 ﻿using Calculator.Application.Interfaces;
 using Calculator.Application.Services;
 using Calculator.Domain.Interfaces;
-using Calculator.Infrastructure;
 using Calculator.Infrastructure.MathEvaluation;
 using Calculator.Infrastructure.RabbitMq;
 
@@ -14,7 +13,7 @@ public static class DependencyInjection
         services.AddScoped<ICalculator, MathEvaluationCalculator>();
         services.AddScoped<IEventBus, RabbitMqEventBus>();
         services.AddScoped<CalculateExpressionService>();
-
+        
         return services;
     }
 }

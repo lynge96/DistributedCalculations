@@ -33,7 +33,7 @@ public sealed class CalculateExpressionService
         
         var calculationResult = new CalculationResult(result);
 
-        // _eventBus.PublishAsync(new CalculationCompletedEvent(calculationResult.CalculationId, expression.Value, calculationResult.Result, calculationResult.Timestamp));
+        _eventBus.PublishAsync(new CalculationCompletedEvent(calculationResult.CalculationId, expression.Value, calculationResult.Result, calculationResult.Timestamp));
         
         _logger.LogInformation(
             "Calculation result: {Result}", 

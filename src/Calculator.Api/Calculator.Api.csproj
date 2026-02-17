@@ -15,6 +15,7 @@
       <ProjectReference Include="..\Calculator.Application\Calculator.Application.csproj" />
       <ProjectReference Include="..\Calculator.Infrastructure\Calculator.Infrastructure.csproj" />
       <ProjectReference Include="..\Shared.Logging\Shared.Logging.csproj" />
+      <ProjectReference Include="..\Shared.RabbitMq\Shared.RabbitMq.csproj" />
     </ItemGroup>
     
 
