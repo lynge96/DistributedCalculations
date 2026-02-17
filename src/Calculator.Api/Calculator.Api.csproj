@@ -9,19 +9,12 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1"/>
-        <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
-        <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
-        <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0" />
-        <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
-        <PackageReference Include="Serilog.Expressions" Version="5.1.0-dev-02309" />
-        <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
-        <PackageReference Include="Serilog.Settings.Configuration" Version="10.0.1-dev-02330" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Calculator.Application\Calculator.Application.csproj" />
       <ProjectReference Include="..\Calculator.Infrastructure\Calculator.Infrastructure.csproj" />
+      <ProjectReference Include="..\Shared.Logging\Shared.Logging.csproj" />
     </ItemGroup>
     
 

@@ -13,5 +13,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Calculator.Domain\Calculator.Domain.csproj" />
+      <ProjectReference Include="..\Shared.Logging\Shared.Logging.csproj" />
     </ItemGroup>
 </Project>

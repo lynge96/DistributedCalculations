@@ -2,6 +2,7 @@ using Calculator.Api;
 using Calculator.Api.Endpoints;
 using Calculator.Api.Middleware;
 using Serilog;
+using Shared.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +20,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
-    .CreateLogger();
+SerilogConfiguration.Configure(builder.Configuration, "Calculator.Api");
 
 builder.Host.UseSerilog();
 
