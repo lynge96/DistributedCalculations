@@ -8,13 +8,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "History.Worker", "src\Histo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "History.Worker.Tests", "tests\History.Worker.Tests\History.Worker.Tests.csproj", "{D06E9B70-9DD8-44C7-B852-9FB8D6A6AC6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Domain", "src\Calculator.Domain\Calculator.Domain.csproj", "{12D949D5-E192-4E95-BE93-830B9869960C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Domain", "src\Shared.Domain\Shared.Domain.csproj", "{12D949D5-E192-4E95-BE93-830B9869960C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Application", "src\Calculator.Application\Calculator.Application.csproj", "{3FD69DB9-8F87-403F-909A-92AE18958C06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Infrastructure", "src\Calculator.Infrastructure\Calculator.Infrastructure.csproj", "{0E2EF4B2-097E-4D49-9857-BD5C56F63E27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Domain.Tests", "tests\Calculator.Domain.Tests\Calculator.Domain.Tests.csproj", "{CE508E4C-B7FF-4237-A948-46273FDE9CFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Domain.Tests", "tests\Shared.Domain.Tests\Shared.Domain.Tests.csproj", "{CE508E4C-B7FF-4237-A948-46273FDE9CFF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Application.Tests", "tests\Calculator.Application.Tests\Calculator.Application.Tests.csproj", "{C21CA017-39EB-4A55-BBD3-DF9A3E018350}"
 EndProject

@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <RootNamespace>Calculator.Domain.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Calculator.Domain\Calculator.Domain.csproj" />
+      <ProjectReference Include="..\..\src\Shared.Domain\Shared.Domain.csproj" />
     </ItemGroup>
 
 </Project>
