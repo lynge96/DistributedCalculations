@@ -1,38 +1,42 @@
 ﻿using System.Text;
+using System.Text.Json;
 using Calculator.Application.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using Shared.RabbitMq;
+using Shared.RabbitMq.Interfaces;
 
 namespace Calculator.Infrastructure.RabbitMq;
 
 public class RabbitMqEventBus : IEventBus
 {
     private readonly ILogger<RabbitMqEventBus> _logger;
-    private readonly IOptions<RabbitMqOptions> _options;
+    private readonly IRabbitMqConnectionFactory _factory;
+    private readonly string _queueName;
 
     public RabbitMqEventBus(
         ILogger<RabbitMqEventBus> logger,
+        IRabbitMqConnectionFactory factory,
         IOptions<RabbitMqOptions> options)
     {
         _logger = logger;
-        _options = options;
+        _factory = factory;
+        _queueName = options.Value.QueueName;
     }
     
     public async Task PublishAsync<TEvent>(TEvent @event)
     {
-        var factory = new ConnectionFactory { HostName = _options.Value.Host, Port = _options.Value.Port, UserName = _options.Value.Username, Password = _options.Value.Password };
+        await using var channel = await _factory.CreateChannelAsync();
 
-        await using var connection = await factory.CreateConnectionAsync();
-        await using var channel = await connection.CreateChannelAsync();
+        var json = JsonSerializer.Serialize(@event);
+        var body = Encoding.UTF8.GetBytes(json);
         
-        await channel.QueueDeclareAsync(queue: "calculations", durable: false, exclusive: false, autoDelete: false, arguments: null);
+        await channel.BasicPublishAsync(
+            exchange: string.Empty, 
+            routingKey: _queueName,
+            body: body);
 
-        var body = Encoding.UTF8.GetBytes(@event?.ToString()!);
-        
-        await channel.BasicPublishAsync(exchange: string.Empty, routingKey: "calculations", body: body);
-        
         _logger.LogInformation("Event published: {@Event}", @event);
     }
 }

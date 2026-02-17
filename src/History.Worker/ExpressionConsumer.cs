@@ -1,48 +1,54 @@
 using System.Text;
+using System.Text.Json;
 using Calculator.Domain.Events;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Shared.RabbitMq;
+using Shared.RabbitMq.Interfaces;
 
 namespace History.Worker;
 
 public class ExpressionConsumer : BackgroundService
 {
     private readonly ILogger<ExpressionConsumer> _logger;
-    private readonly IOptions<RabbitMqOptions> _options;
+    private readonly IRabbitMqConnectionFactory _factory;
+    private readonly string _queueName;
 
     public ExpressionConsumer(
         ILogger<ExpressionConsumer> logger,
+        IRabbitMqConnectionFactory factory,
         IOptions<RabbitMqOptions> options)
     {
         _logger = logger;
-        _options = options;
+        _factory = factory;
+        _queueName = options.Value.QueueName;
     }
 
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
         while (!ct.IsCancellationRequested)
         {
-            var factory = new ConnectionFactory { HostName = _options.Value.Host, Port = _options.Value.Port, UserName = _options.Value.Username, Password = _options.Value.Password };
+            await using var channel = await _factory.CreateChannelAsync(ct);
 
-            await using var connection = await factory.CreateConnectionAsync(ct);
-            await using var channel = await connection.CreateChannelAsync(cancellationToken: ct);
-            
-            await channel.QueueDeclareAsync(queue: "calculations", durable: false, exclusive: false, autoDelete: false, arguments: null, cancellationToken: ct);
-            
-            Console.WriteLine(" [*] Waiting for messages.");
-            
+            _logger.LogInformation("Waiting for messages on '{queue}' queue.", _queueName);
+
             var consumer = new AsyncEventingBasicConsumer(channel);
-            consumer.ReceivedAsync += (_, ea) =>
+            consumer.ReceivedAsync += async (_, ea) =>
             {
                 var body = ea.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-                _logger.LogInformation(" [x] Received {Message}", message);
-                return Task.CompletedTask;
+                var json = Encoding.UTF8.GetString(body);
+                
+                var receivedEvent = JsonSerializer.Deserialize<CalculationCompletedEvent>(json);
+
+                _logger.LogInformation("Received event: {@Event}", receivedEvent);
+
+                // Her kan du parse og gemme i memory / DB
+                await Task.Yield();
             };
-            
-            await channel.BasicConsumeAsync("calculations", true, consumer, ct);
+
+            await channel.BasicConsumeAsync(queue: _queueName, autoAck: true, consumer: consumer, cancellationToken: ct);
+
             
             await Task.Delay(1000, ct);
         }

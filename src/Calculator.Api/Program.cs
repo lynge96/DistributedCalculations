@@ -4,6 +4,7 @@ using Calculator.Api.Middleware;
 using Serilog;
 using Shared.Logging;
 using Shared.RabbitMq;
+using Shared.RabbitMq.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,9 @@ builder.Services.AddCors(options =>
 });
 
 builder.Configuration.ConfigureSerilog("Calculator.Api");
+
 builder.Services.ConfigureRabbitMq(builder.Configuration);
+builder.Services.AddSingleton<IRabbitMqConnectionFactory, RabbitMqConnectionFactory>();
 
 builder.Host.UseSerilog();
 
