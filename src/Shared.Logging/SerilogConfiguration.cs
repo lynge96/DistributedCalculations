@@ -1,12 +1,17 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 
 namespace Shared.Logging;
 
 public static class SerilogConfiguration
 {
-    public static void ConfigureSerilog(this IConfiguration configuration, string serviceName)
+    public static void ConfigureSerilog(this IConfiguration configuration)
     {
+        var serviceName =
+            Assembly.GetEntryAssembly()?.GetName().Name
+            ?? "UnknownService";
+        
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(configuration)
             .Enrich.WithProperty("Service", serviceName)

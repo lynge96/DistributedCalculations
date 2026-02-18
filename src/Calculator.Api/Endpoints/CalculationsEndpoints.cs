@@ -4,7 +4,7 @@ using Calculator.Domain.Models;
 
 namespace Calculator.Api.Endpoints;
 
-public static class CalculationsEndpoint
+public static class CalculationsEndpoints
 {
     public static void MapCalculationsEndpoints(this WebApplication app)
     {

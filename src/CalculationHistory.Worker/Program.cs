@@ -1,12 +1,12 @@
-using History.Worker;
+using CalculationHistory.Worker;
+using Serilog;
 using Shared.Logging;
 using Shared.RabbitMq;
-using Serilog;
 using Shared.RabbitMq.Interfaces;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-builder.Configuration.ConfigureSerilog("History.Worker");
+builder.Configuration.ConfigureSerilog();
 
 builder.Services.AddSerilog();
 builder.Services.ConfigureRabbitMq(builder.Configuration);

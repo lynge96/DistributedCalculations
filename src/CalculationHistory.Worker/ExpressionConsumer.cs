@@ -7,7 +7,7 @@ using RabbitMQ.Client.Events;
 using Shared.RabbitMq;
 using Shared.RabbitMq.Interfaces;
 
-namespace History.Worker;
+namespace CalculationHistory.Worker;
 
 public class ExpressionConsumer : BackgroundService
 {
@@ -43,12 +43,13 @@ public class ExpressionConsumer : BackgroundService
 
                 _logger.LogInformation("Received event: {@Event}", receivedEvent);
 
-                // Her kan du parse og gemme i memory / DB
+                if (receivedEvent != null) 
+                    Handle(receivedEvent);
+
                 await Task.Yield();
             };
 
             await channel.BasicConsumeAsync(queue: _queueName, autoAck: true, consumer: consumer, cancellationToken: ct);
-
             
             await Task.Delay(1000, ct);
         }
