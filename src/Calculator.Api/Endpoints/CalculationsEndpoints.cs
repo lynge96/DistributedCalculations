@@ -8,7 +8,7 @@ public static class CalculationsEndpoints
 {
     public static void MapCalculationsEndpoints(this WebApplication app)
     {
-        app.MapPost("/calculations", (CalculateRequestDto request, CalculateExpressionService calculationService) =>
+        app.MapPost("/api/calculations", (CalculateRequestDto request, CalculateExpressionService calculationService) =>
         {
             var expression = new Expression(request.MathExpression);
             var result = calculationService.Execute(expression);

@@ -28,15 +28,25 @@ public class RabbitMqEventBus : IEventBus
     public async Task PublishAsync<TEvent>(TEvent @event)
     {
         await using var channel = await _factory.CreateChannelAsync();
-
+        
         var json = JsonSerializer.Serialize(@event);
         var body = Encoding.UTF8.GetBytes(json);
         
+        var props = new BasicProperties
+        {
+            ContentType = "application/json",
+            ContentEncoding = "utf-8",
+            DeliveryMode = DeliveryModes.Persistent,
+            Type = typeof(TEvent).FullName
+        };
+        
         await channel.BasicPublishAsync(
-            exchange: string.Empty, 
+            exchange: string.Empty,
             routingKey: _queueName,
+            mandatory: false,
+            basicProperties: props,
             body: body);
-
-        _logger.LogInformation("Event published: {@Event}", @event);
+        
+        _logger.LogInformation("Event published: {EventType}", typeof(TEvent).Name);
     }
 }

@@ -9,4 +9,5 @@ public sealed class RabbitMqOptions
     public required string Password { get; init; }
     public required string Exchange { get; init; }
     public required string QueueName { get; init; }
+    public required int RecordsToKeep { get; init; }
 }

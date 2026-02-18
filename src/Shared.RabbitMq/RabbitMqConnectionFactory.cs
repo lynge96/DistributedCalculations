@@ -5,10 +5,13 @@ using Shared.RabbitMq.Interfaces;
 
 namespace Shared.RabbitMq;
 
-public class RabbitMqConnectionFactory : IRabbitMqConnectionFactory
+public class RabbitMqConnectionFactory : IRabbitMqConnectionFactory, IAsyncDisposable
 {
     private readonly IOptions<RabbitMqOptions> _options;
     private readonly ILogger<RabbitMqConnectionFactory> _logger;
+    
+    private readonly SemaphoreSlim _connectionLock = new(1, 1);
+    private IConnection? _connection;
     
     public RabbitMqConnectionFactory(
         ILogger<RabbitMqConnectionFactory> logger,
@@ -20,16 +23,32 @@ public class RabbitMqConnectionFactory : IRabbitMqConnectionFactory
     
     public async Task<IConnection> CreateConnectionAsync(CancellationToken ct = default)
     {
-        var factory = new ConnectionFactory
-        {
-            HostName = _options.Value.Host,
-            Port = _options.Value.Port,
-            UserName = _options.Value.Username,
-            Password = _options.Value.Password
-        };
+        if (_connection is { IsOpen: true })
+            return _connection;
 
-        _logger.LogDebug("Creating RabbitMQ connection to {Host}:{Port}", _options.Value.Host, _options.Value.Port);
-        return await factory.CreateConnectionAsync(ct);
+        await _connectionLock.WaitAsync(ct);
+        try
+        {
+            if (_connection is { IsOpen: true })
+                return _connection;
+
+            var factory = new ConnectionFactory
+            {
+                HostName = _options.Value.Host,
+                Port = _options.Value.Port,
+                UserName = _options.Value.Username,
+                Password = _options.Value.Password
+            };
+
+            _logger.LogInformation("Creating RabbitMQ connection to {Host}:{Port}", _options.Value.Host, _options.Value.Port);
+
+            _connection = await factory.CreateConnectionAsync(ct);
+            return _connection;
+        }
+        finally
+        {
+            _connectionLock.Release();
+        }
     }
 
     public async Task<IChannel> CreateChannelAsync(CancellationToken ct = default)
@@ -38,7 +57,7 @@ public class RabbitMqConnectionFactory : IRabbitMqConnectionFactory
         var channel = await connection.CreateChannelAsync(cancellationToken: ct);
 
         await channel.QueueDeclareAsync(
-            queue: "calculations",
+            queue: _options.Value.QueueName,
             durable: false,
             exclusive: false,
             autoDelete: false,
@@ -46,5 +65,20 @@ public class RabbitMqConnectionFactory : IRabbitMqConnectionFactory
             cancellationToken: ct);
 
         return channel;
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (_connection is not null)
+                await _connection.CloseAsync();
+        }
+        finally
+        {
+            _connection?.Dispose();
+            _connection = null;
+            _connectionLock.Dispose();
+        }
     }
 }
