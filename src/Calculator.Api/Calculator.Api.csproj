@@ -17,6 +17,12 @@
       <ProjectReference Include="..\Shared.Logging\Shared.Logging.csproj" />
       <ProjectReference Include="..\Shared.RabbitMq\Shared.RabbitMq.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
     
 
 </Project>

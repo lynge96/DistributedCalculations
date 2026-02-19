@@ -18,5 +18,39 @@ services:
       timeout: 5s
       retries: 5
 
+  calculator-api:
+    build:
+      context: .
+      dockerfile: src/Calculator.Api/Dockerfile
+    container_name: calculator-api
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__Username: guest
+      RabbitMq__Password: guest
+    ports:
+      - "5000:8080"
+
+  calculationhistory-api:
+    build:
+      context: .
+      dockerfile: src/CalculationHistory.Api/Dockerfile
+    container_name: calculationhistory-api
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__Username: guest
+      RabbitMq__Password: guest
+    ports:
+      - "5001:8080"
+
 volumes:
   rabbitmq_data:
