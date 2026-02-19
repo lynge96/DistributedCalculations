@@ -1,11 +1,10 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /app
+WORKDIR /src
 
 COPY ["src/CalculationHistory.Api/CalculationHistory.Api.csproj", "CalculationHistory.Api/"]
 COPY ["src/Shared.Domain/Shared.Domain.csproj", "Shared.Domain/"]
@@ -16,7 +15,7 @@ RUN dotnet restore "CalculationHistory.Api/CalculationHistory.Api.csproj"
 
 COPY src/ ./
 
-WORKDIR "/app/CalculationHistory.Api"
+WORKDIR /src/CalculationHistory.Api
 RUN dotnet build "CalculationHistory.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
