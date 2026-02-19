@@ -1,0 +1,20 @@
+﻿app = "rabbitmq"
+
+[build]
+image = "bitnami/rabbitmq:latest"
+
+[env]
+RABBITMQ_DEFAULT_USER = "guest"
+RABBITMQ_DEFAULT_PASS = "guest"
+
+[[services]]
+internal_port = 5672
+protocol = "tcp"
+
+[[services.ports]]
+port = 5672
+handlers = ["tcp"]
+
+[[services.ports]]
+port = 15672
+handlers = ["http"]
