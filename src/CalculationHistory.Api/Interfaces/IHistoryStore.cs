@@ -6,4 +6,5 @@ public interface IHistoryStore
 {
     void Add(CalculationCompletedEvent record);
     IReadOnlyList<CalculationCompletedEvent> GetHistory();
+    void Clear();
 }

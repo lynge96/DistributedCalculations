@@ -15,5 +15,11 @@ public static class HistoryEndpoints
             
             return Results.Ok(calculationHistoryDto);
         });
+
+        app.MapPost("/api/history/clear", (IHistoryStore store) =>
+        {
+            store.Clear();
+            return Results.NoContent();
+        });
     }
 }

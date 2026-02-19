@@ -37,4 +37,10 @@ public sealed class InMemoryHistoryStore : IHistoryStore
         _logger.LogInformation("Getting {Count} records from history", _items.Count);
         return _items.ToList();
     }
+
+    public void Clear()
+    {
+        _logger.LogInformation("Clearing {Count} records from history", _items.Count);
+        _items.Clear();
+    }
 }

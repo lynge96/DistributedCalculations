@@ -15,12 +15,12 @@ public class InMemoryHistoryStoreTests
         var options = Options.Create(new RabbitMqOptions
         {
             RecordsToKeep = recordsToKeep,
-            Host = null,
+            Host = null!,
             Port = 0,
-            Username = null,
-            Password = null,
-            Exchange = null,
-            QueueName = null
+            Username = null!,
+            Password = null!,
+            Exchange = null!,
+            QueueName = null!
         });
 
         return new InMemoryHistoryStore(logger, options);
@@ -87,5 +87,33 @@ public class InMemoryHistoryStoreTests
 
         Assert.Equal(second, history[0]);
         Assert.Equal(first, history[1]);
+    }
+    
+    [Fact]
+    public void Clear_removes_all_history_records()
+    {
+        var stub = CreateStub(recordsToKeep: 5);
+
+        var evt1 = new CalculationCompletedEvent(
+            Guid.NewGuid(),
+            "1 + 1",
+            2,
+            DateTimeOffset.UtcNow);
+
+        var evt2 = new CalculationCompletedEvent(
+            Guid.NewGuid(),
+            "2 + 2",
+            4,
+            DateTimeOffset.UtcNow);
+
+        stub.Add(evt1);
+        stub.Add(evt2);
+
+        Assert.Equal(2, stub.GetHistory().Count);
+        
+        stub.Clear();
+        
+        var history = stub.GetHistory();
+        Assert.Empty(history);
     }
 }
