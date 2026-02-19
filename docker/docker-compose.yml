@@ -20,7 +20,7 @@ services:
 
   calculator-api:
     build:
-      context: .
+      context: ..
       dockerfile: src/Calculator.Api/Dockerfile
     container_name: calculator-api
     depends_on:
@@ -37,7 +37,7 @@ services:
 
   calculationhistory-api:
     build:
-      context: .
+      context: ..
       dockerfile: src/CalculationHistory.Api/Dockerfile
     container_name: calculationhistory-api
     depends_on:
