@@ -1,20 +1,33 @@
 ﻿app = "rabbitmq"
 
 [build]
-image = "bitnami/rabbitmq:latest"
 
-[env]
-RABBITMQ_DEFAULT_USER = "guest"
-RABBITMQ_DEFAULT_PASS = "guest"
-
+# rabbitmq main
 [[services]]
-internal_port = 5672
-protocol = "tcp"
+    http_checks = []
+    internal_port = 5672
+    protocol = "tcp"
+    script_checks = []
+
+[[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "60s"
+
+# rabbitmq admin
+[[services]]
+    http_checks = []
+    internal_port = 15672
+    protocol = "tcp"
+    script_checks = []
 
 [[services.ports]]
-port = 5672
-handlers = ["tcp"]
+    handlers = ["tls", "http"]
+    port = "15672"
 
-[[services.ports]]
-port = 15672
-handlers = ["http"]
+[[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "60s"
