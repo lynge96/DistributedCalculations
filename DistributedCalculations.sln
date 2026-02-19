@@ -6,7 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{616D489D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculationHistory.Api", "src\CalculationHistory.Api\CalculationHistory.Api.csproj", "{25040CFA-C222-4D21-8023-6927E4D10590}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "History.Worker.Tests", "tests\History.Worker.Tests\History.Worker.Tests.csproj", "{D06E9B70-9DD8-44C7-B852-9FB8D6A6AC6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalculationHistory.Api.Tests", "tests\CalculationHistory.Api.Tests\CalculationHistory.Api.Tests.csproj", "{D06E9B70-9DD8-44C7-B852-9FB8D6A6AC6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Domain", "src\Shared.Domain\Shared.Domain.csproj", "{12D949D5-E192-4E95-BE93-830B9869960C}"
 EndProject
