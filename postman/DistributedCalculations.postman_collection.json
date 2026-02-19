@@ -1,0 +1,140 @@
+{
+  "info": {
+    "_postman_id": "63551f3c-0ce6-48ef-be58-9975f386efe9",
+    "name": "DistributedCalculations",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "26225321"
+  },
+  "item": [
+    {
+      "name": "Calculate",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\t\"mathExpression\": \"-3^4sin(-PI/4)\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://34.51.138.132:5000/api/calculations",
+          "protocol": "http",
+          "host": [
+            "34",
+            "51",
+            "138",
+            "132"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "calculations"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Calculate [overflow]",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\t\"mathExpression\": \"-3^5000000\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://34.51.138.132:5000/api/calculations",
+          "protocol": "http",
+          "host": [
+            "34",
+            "51",
+            "138",
+            "132"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "calculations"
+          ]
+        },
+        "description": "## Calculate — Overflow Error Case\n\nThis request demonstrates an **overflow error** scenario when submitting a math expression whose result exceeds the supported numeric limits of the calculation engine.\n\n### Endpoint\n\n`POST /api/calculations`\n\nSubmits a mathematical expression to be evaluated by the distributed calculation service. The server parses and computes the expression, returning the result or an appropriate error if the computation cannot be completed.\n\n### Request Body\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `mathExpression` | `string` | The mathematical expression to evaluate (e.g. `\"2+2\"`, `\"-3^5000000\"`). Supports standard arithmetic operators and numeric values. |\n\n### This Example — Overflow Error\n\nThe expression `\"-3^5000000\"` raises `-3` to the power of `5,000,000`, producing a number far beyond the supported numeric range. The server responds with a `422 Unprocessable Entity` status and a `CalculationOverflowException`.\n\n**Example response:**\n\n``` json\n{\n  \"StatusCode\": 422,\n  \"Type\": \"CalculationOverflowException\",\n  \"Message\": \"The calculation result exceeds supported limits\"\n}\n\n ```\n\nUse this request to verify that the API correctly handles overflow conditions and returns a meaningful error rather than silently failing or returning an incorrect result."
+      },
+      "response": []
+    },
+    {
+      "name": "Calculate [invalid expression]",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n\t\"mathExpression\": \"-3**5\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://34.51.138.132:5000/api/calculations",
+          "protocol": "http",
+          "host": [
+            "34",
+            "51",
+            "138",
+            "132"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "calculations"
+          ]
+        },
+        "description": "## Calculate \\[invalid expression\\]\n\nThis request tests the API's error-handling behavior when an **invalid math expression** is submitted to the calculation endpoint.\n\n### Purpose\n\nValidates that the API correctly rejects unsupported or malformed mathematical expressions and returns an appropriate error response. In this case, the expression uses `**` (double asterisk), which is **not a supported operator** in this API.\n\n### Endpoint\n\n`POST http://34.51.138.132:5000/api/calculations`\n\n### Request Body\n\n``` json\n{\n  \"mathExpression\": \"-3**5\"\n}\n\n ```\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `mathExpression` | `string` | The mathematical expression to evaluate. Must use supported operators only. |\n\n### Expected Response\n\n**Status:** `400 Bad Request`\n\n``` json\n{\n  \"StatusCode\": 400,\n  \"Type\": \"MathExpressionException\",\n  \"Message\": \"Error of evaluating the expression. '**' is not a supported operator.\"\n}\n\n ```\n\n| Field | Description |\n| --- | --- |\n| `StatusCode` | HTTP status code indicating a client-side error (`400`) |\n| `Type` | Exception type — `MathExpressionException` signals an invalid or unsupported expression |\n| `Message` | Human-readable description of what went wrong during evaluation |\n\n### Notes\n\n- The `**` operator (exponentiation, as used in Python) is **not supported** by this API.\n    \n- Use valid arithmetic operators (e.g., `+`, `-`, `\\\\\\*`, `/`) to get a successful `200` response.\n    \n- This request is useful for verifying that the API's input validation and error messaging work as expected."
+      },
+      "response": []
+    },
+    {
+      "name": "History",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Clear History",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://34.51.138.132:5001/api/history/clear",
+          "protocol": "http",
+          "host": [
+            "34",
+            "51",
+            "138",
+            "132"
+          ],
+          "port": "5001",
+          "path": [
+            "api",
+            "history",
+            "clear"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
