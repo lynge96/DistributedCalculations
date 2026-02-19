@@ -40,8 +40,27 @@ public class RabbitMqConnectionFactory : IRabbitMqConnectionFactory, IAsyncDispo
                 Password = _options.Value.Password
             };
 
-            _logger.LogInformation("Creating RabbitMQ connection to {Host}:{Port}", _options.Value.Host, _options.Value.Port);
+            _logger.LogInformation("Creating RabbitMQ connection to {Host}:{Port}", factory.HostName, factory.Port);
 
+            const int maxRetries = 5;
+            var retryDelay = 1000;
+
+            for (var attempt = 1; attempt <= maxRetries; attempt++)
+            {
+                try
+                {
+                    _connection = await factory.CreateConnectionAsync(ct);
+                    _logger.LogInformation("RabbitMQ connection established on attempt {Attempt}", attempt);
+                    return _connection;
+                }
+                catch (Exception ex) when (attempt < maxRetries)
+                {
+                    _logger.LogWarning(ex, "Failed to connect to RabbitMQ (attempt {Attempt}/{MaxRetries}). Retrying in {Delay}ms...", attempt, maxRetries, retryDelay);
+                    await Task.Delay(retryDelay, ct);
+                    retryDelay *= 2;
+                }
+            }
+            
             _connection = await factory.CreateConnectionAsync(ct);
             return _connection;
         }
