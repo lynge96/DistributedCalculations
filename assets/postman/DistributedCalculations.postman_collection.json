@@ -13,7 +13,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n\t\"mathExpression\": \"-3^4sin(-PI/4)\"\r\n}",
+          "raw": "{\r\n\t\"mathExpression\": \"pow(22, 4)\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -34,7 +34,8 @@
             "api",
             "calculations"
           ]
-        }
+        },
+        "description": "## Calculate Math Expression\n\nEvaluates a mathematical expression and returns the computed result. This endpoint accepts a string-based math expression and processes it server-side, supporting standard arithmetic, exponentiation, trigonometric functions, and mathematical constants.\n\n---\n\n### Request Body\n\n**Content-Type:** `application/json`\n\n| Field | Type | Required | Description |\n| --- | --- | --- | --- |\n| `mathExpression` | string | ✅ Yes | A mathematical expression to evaluate. Supports operators, functions, and constants. |\n\n---\n\n### Supported Syntax\n\n- **Arithmetic operators:** `+`, `-`, `\\\\\\\\\\\\*`, `/`\n    \n- **Exponentiation:** `^` (e.g. `-3^4`)\n    \n- **Trigonometric functions:** `sin()`, `cos()`, `tan()`, etc.\n    \n- **Mathematical constants:** `PI`, `E`\n    \n- **Negative numbers and parentheses** for grouping\n    \n\n---\n\n### Example Request Body\n\n``` json\n{\n  \"mathExpression\": \"-3^4sin(-PI/4)\"\n}\n\n ```\n\n**More example expressions:**\n\n| Expression | Description |\n| --- | --- |\n| `-3^4sin(-PI/4)` | Exponentiation combined with sine of `-π/4` |\n| `pow(22, 4)` | Function based calculation with `pow(x, y)` |\n\n---\n\n### Notes\n\n- Expressions that result in very large numbers may cause an **overflow error**.\n    \n- Invalid or malformed expressions will return an **error response** indicating the expression could not be parsed or evaluated."
       },
       "response": []
     },
@@ -100,7 +101,7 @@
             "calculations"
           ]
         },
-        "description": "## Calculate \\[invalid expression\\]\n\nThis request tests the API's error-handling behavior when an **invalid math expression** is submitted to the calculation endpoint.\n\n### Purpose\n\nValidates that the API correctly rejects unsupported or malformed mathematical expressions and returns an appropriate error response. In this case, the expression uses `**` (double asterisk), which is **not a supported operator** in this API.\n\n### Endpoint\n\n`POST http://34.51.138.132:5000/api/calculations`\n\n### Request Body\n\n``` json\n{\n  \"mathExpression\": \"-3**5\"\n}\n\n ```\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `mathExpression` | `string` | The mathematical expression to evaluate. Must use supported operators only. |\n\n### Expected Response\n\n**Status:** `400 Bad Request`\n\n``` json\n{\n  \"StatusCode\": 400,\n  \"Type\": \"MathExpressionException\",\n  \"Message\": \"Error of evaluating the expression. '**' is not a supported operator.\"\n}\n\n ```\n\n| Field | Description |\n| --- | --- |\n| `StatusCode` | HTTP status code indicating a client-side error (`400`) |\n| `Type` | Exception type — `MathExpressionException` signals an invalid or unsupported expression |\n| `Message` | Human-readable description of what went wrong during evaluation |\n\n### Notes\n\n- The `**` operator (exponentiation, as used in Python) is **not supported** by this API.\n    \n- Use valid arithmetic operators (e.g., `+`, `-`, `\\\\\\*`, `/`) to get a successful `200` response.\n    \n- This request is useful for verifying that the API's input validation and error messaging work as expected."
+        "description": "## Calculate \\[invalid expression\\]\n\nThis request tests the API's error-handling behavior when an **invalid math expression** is submitted to the calculation endpoint.\n\n### Purpose\n\nValidates that the API correctly rejects unsupported or malformed mathematical expressions and returns an appropriate error response. In this case, the expression uses `**` (double asterisk), which is **not a supported operator** in this API.\n\n### Endpoint\n\n`POST http://34.51.138.132:5000/api/calculations`\n\n### Request Body\n\n``` json\n{\n  \"mathExpression\": \"-3**5\"\n}\n\n ```\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `mathExpression` | `string` | The mathematical expression to evaluate. Must use supported operators only. |\n\n### Expected Response\n\n**Status:** `400 Bad Request`\n\n``` json\n{\n  \"StatusCode\": 400,\n  \"Type\": \"MathExpressionException\",\n  \"Message\": \"Error of evaluating the expression. '**' is not a supported operator.\"\n}\n\n ```\n\n| Field | Description |\n| --- | --- |\n| `StatusCode` | HTTP status code indicating a client-side error (`400`) |\n| `Type` | Exception type — `MathExpressionException` signals an invalid or unsupported expression |\n| `Message` | Human-readable description of what went wrong during evaluation |\n\n### Notes\n\n- The `**` operator (exponentiation, as used in Python) is **not supported** by this API.\n    \n- Use valid arithmetic operators (e.g., `+`, `-`, `\\\\\\\\*`, `/`) to get a successful `200` response.\n    \n- This request is useful for verifying that the API's input validation and error messaging work as expected."
       },
       "response": []
     },
@@ -108,7 +109,23 @@
       "name": "History",
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "http://34.51.138.132:5001/api/history",
+          "protocol": "http",
+          "host": [
+            "34",
+            "51",
+            "138",
+            "132"
+          ],
+          "port": "5001",
+          "path": [
+            "api",
+            "history"
+          ]
+        },
+        "description": "## Get Calculation History\n\nRetrieves the full history of calculations that have been performed through the Distributed Calculations API.\n\n---\n\n### Response Structure\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `count` | integer | Total number of calculation history items returned |\n| `calculationHistory` | array | List of past calculation records |\n\n#### `calculationHistory` Item Fields\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `calculationId` | string (UUID) | Unique identifier for the calculation |\n| `expression` | string | The mathematical expression that was evaluated (e.g. `pow(22, 4)`, `-3^4sin(-PI/4)`) |\n| `result` | number | The computed result of the expression |\n| `timestamp` | string (ISO 8601) | Date and time when the calculation was performed |\n\n---\n\n### Example Response\n\n``` json\n{\n  \"count\": 2,\n  \"calculationHistory\": [\n    {\n      \"calculationId\": \"a486899e-aff3-4260-988a-fd9b4641f5cf\",\n      \"expression\": \"pow(22, 4)\",\n      \"result\": 234256,\n      \"timestamp\": \"2026-02-20T09:35:14.9392907+00:00\"\n    },\n    {\n      \"calculationId\": \"b00134c1-7692-4cf9-a934-7bcc3d9a6c5b\",\n      \"expression\": \"-3^4sin(-PI/4)\",\n      \"result\": 57.275649276110386,\n      \"timestamp\": \"2026-02-20T09:32:17.1944764+00:00\"\n    }\n  ]\n}\n\n ```"
       },
       "response": []
     },
@@ -132,7 +149,8 @@
             "history",
             "clear"
           ]
-        }
+        },
+        "description": "## Clear History\n\nClears the entire calculation history by sending a `POST` request to the `/api/history/clear` endpoint.\n\nThis endpoint removes all previously stored calculation records from the server. It does not require a request body.\n\n**Method:** `POST`  \n**Endpoint:** `/api/history/clear`\n\n### Responses\n\n| Status Code | Description |\n| --- | --- |\n| `200 OK` | History cleared successfully. |\n| `500 Internal Server Error` | An error occurred while clearing the history. |\n\n> **Note:** This action is irreversible. Once the history is cleared, all previous calculation records will be permanently deleted."
       },
       "response": []
     }
