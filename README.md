@@ -34,3 +34,7 @@ As the title says, it is an over-engineered calculator, which means: You should 
 6. Muligheder for at skalere projektet?
     1. Skal kunne skaleres uafhængigt og horisontalt.
     2. Reverse proxy, NGinx, Load Balancer.
+
+
+#### **Systemarkitektur**
+![Systemdiagram.png](assets/Systemdiagram.png)
